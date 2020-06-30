@@ -3,7 +3,7 @@
     hours    = 0
     minutes  = 0
     seconds  = 0
-    dt_atmos = 60
+    dt_atmos = 300
     calendar = 'NO_CALENDAR'
 /
 
