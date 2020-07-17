@@ -14,7 +14,22 @@ function randomselect(npnts::Integer,prcp::AbstractArray,tcwv::AbstractArray)
 
 end
 
-function bretherthoncurve(prcp::AbstractArray,tcwv::AbstractArray,tvec)
+function bretherthoncurve(prcp::AbstractArray,tcwv::AbstractArray,swp::AbstractArray)
+
+    fcwv = tcwv ./ swp;
+    tvec = 0:0.01:1; tsep = (tvec[2]-tvec[1])/2; jj = 0;
+    pvec = zeros(length(tvec))
+    pstd = zeros(length(tvec))
+    for tii in tvec
+        pii = @view prcp[ (fcwv.>(tii-tsep)) .& (fcwv.<(tii+tsep)) ]
+        jj = jj + 1; pvec[jj] = mean(pii); pstd[jj] = std(pii)
+    end
+
+    return pvec,pstd
+
+end
+
+function bretherthoncurve(prcp::AbstractArray,tcwv::AbstractArray,tvec::AbstractRange)
 
     tsep = (tvec[2]-tvec[1])/2
     pvec = zeros(length(tvec)); jj = 0;
