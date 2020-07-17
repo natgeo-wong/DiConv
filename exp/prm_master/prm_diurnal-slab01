@@ -1,6 +1,6 @@
 &PARAMETERS
 
-caseid ='diurnal-WTGy',
+caseid ='diurnal-slab01',
 
 dx = 2000.,
 dy = 2000.,
@@ -40,10 +40,10 @@ SFC_TAU_FXD    = .false.,
 
 longitude0 = 0.,
 latitude0  = 43.33,
-day0       = 72.5,
-tabs_s     = 301.5,
+day0       = 77.5,
+tabs_s     = 290,
 
-depth_slab_ocean = 10,
+depth_slab_ocean = 0.1,
 
 nrad = 12,
 
@@ -87,8 +87,8 @@ rad3Dout     = .true.,
 
 &UWOPTIONS
 
-compute_advection_everywhere = .true.,
-dowtg_blossey_etal_JAMES2009 = .true., ! alternate implementation
+compute_advection_everywhere = .false.,
+dowtg_blossey_etal_JAMES2009 = .false., ! alternate implementation
 am_wtg  = 2.,                           ! momentum damping rate in 1/d -- note must be non-zero, default= 2.,
 am_wtg_exp = 0.,                        ! exponent of p/p0 in momentum damping rate.
 lambda_wtg = 650.e3,                    ! quarter wavelength in m. default = 650.e3 (=650 km).
