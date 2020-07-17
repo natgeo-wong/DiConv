@@ -41,7 +41,7 @@ SFC_TAU_FXD    = .false.,
 longitude0 = 0.,
 latitude0  = 43.33,
 day0       = 72.5,
-tabs_s     = 301.5.,
+tabs_s     = 301.5,
 
 depth_slab_ocean = 10,
 
