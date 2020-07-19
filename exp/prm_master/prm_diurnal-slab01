@@ -39,11 +39,11 @@ SFC_FLX_FXD    = .false.,
 SFC_TAU_FXD    = .false.,
 
 longitude0 = 0.,
-latitude0  = 43.33,
-day0       = 77.5,
+latitude0  = 50,
+day0       = 80.5,
 tabs_s     = 290,
 
-depth_slab_ocean = 0.1,
+depth_slab_ocean = 1.,
 
 nrad = 12,
 
