@@ -1,5 +1,5 @@
 using DrWatson
-@quickactivate "MaritimeContPWV"
+@quickactivate "DiConv"
 using ClimateSatellite
 
 ddir = "/n/kuangdss01/lab/"
