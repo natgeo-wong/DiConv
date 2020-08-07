@@ -63,8 +63,8 @@ domisr  = .false.,
 
 nstop    = 302400,
 nprint   = 3600,
-nstat    = 45,     ! Calculate statistics every 45 x 20 = 900 seconds = 15 minutes
-nstatfrq = 15,     ! Collect 15 samples per statistical calculation (every 1 minute)
+nstat    = 180,    ! Calculate statistics every 180 x 20 = 3600 seconds = 1 hour
+nstatfrq = 60,     ! Collect 15 samples per statistical calculation (every minute)
 
 doSAMconditionals     = .false.,
 dosatupdnconditionals = .false.,
