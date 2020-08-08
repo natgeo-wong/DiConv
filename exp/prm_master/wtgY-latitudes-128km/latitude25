@@ -1,6 +1,6 @@
 &PARAMETERS
 
-caseid ='wtgY-latitude20',
+caseid ='wtgY-latitude25',
 
 dx = 2000.,
 dy = 2000.,
@@ -39,7 +39,7 @@ SFC_FLX_FXD    = .false.,
 SFC_TAU_FXD    = .false.,
 
 longitude0 = 0.,
-latitude0  = 20,
+latitude0  = 25,
 day0       = 80.5,
 tabs_s     = 290,
 
