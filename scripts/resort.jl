@@ -1,36 +1,23 @@
 using DrWatson
 @quickactivate "DiConv"
-
 using SAMTools
 
-pdir = datadir("SAM")
-fnc  = "RCE"
+include(srcdir("resort.jl"))
 
-function resortall(init::AbstractDict,sroot::AbstractDict)
+resortdiconv("wtgN-diurnalN","fixedSST-temp303",pdir=datadir(),fname="RCE")
+resortdiconv("wtgN-diurnalN","fixedSST-temp305",pdir=datadir(),fname="RCE")
+resortdiconv("wtgN-diurnalY","fixedSST-temp303",pdir=datadir(),fname="RCE")
+resortdiconv("wtgN-diurnalY","fixedSST-temp305",pdir=datadir(),fname="RCE")
+resortdiconv("wtgN-diurnalY","dynamicSST-slab0.2",pdir=datadir(),fname="RCE",dosst=true)
+resortdiconv("wtgN-diurnalY","dynamicSST-slab0.5",pdir=datadir(),fname="RCE",dosst=true)
+resortdiconv("wtgN-diurnalY","dynamicSST-slab01",pdir=datadir(),fname="RCE",dosst=true)
+resortdiconv("wtgN-diurnalY","dynamicSST-slab02",pdir=datadir(),fname="RCE",dosst=true)
 
-    samresort(init,sroot,modID="d2D",parID="t_sst")
-    samresort(init,sroot,modID="m2D",parID="prcp")
-    samresort(init,sroot,modID="m2D",parID="tcw")
-    samresort(init,sroot,modID="m2D",parID="swp")
-    samresort(init,sroot,modID="r2D",parID="sol_net_toa")
-
-end
-
-init,sroot = samstartup(
-    prjpath=pdir,
-    config="diurnalN_wtgN_qforceN",fname=fnc,
-    loadinit=false
-); resortall(init,sroot)
-
-
-init,sroot = samstartup(
-    prjpath=pdir,
-    config="diurnalY_wtgN_qforceN",fname=fnc,
-    loadinit=false
-); resortall(init,sroot)
-
-init,sroot = samstartup(
-    prjpath=pdir,
-    config="diurnalY_wtgY_qforceN",fname=fnc,
-    loadinit=false
-); resortall(init,sroot)
+resortdiconv("wtgY-diurnalN","fixedSST-temp303",pdir=datadir(),fname="RCE")
+resortdiconv("wtgY-diurnalN","fixedSST-temp305",pdir=datadir(),fname="RCE")
+resortdiconv("wtgY-diurnalY","fixedSST-temp303",pdir=datadir(),fname="RCE")
+resortdiconv("wtgY-diurnalY","fixedSST-temp305",pdir=datadir(),fname="RCE")
+resortdiconv("wtgY-diurnalY","dynamicSST-slab0.2",pdir=datadir(),fname="RCE",dosst=true)
+resortdiconv("wtgY-diurnalY","dynamicSST-slab0.5",pdir=datadir(),fname="RCE",dosst=true)
+resortdiconv("wtgY-diurnalY","dynamicSST-slab01",pdir=datadir(),fname="RCE",dosst=true)
+resortdiconv("wtgY-diurnalY","dynamicSST-slab02",pdir=datadir(),fname="RCE",dosst=true)
