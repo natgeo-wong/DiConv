@@ -42,3 +42,21 @@ function bretherthoncurve(prcp::AbstractArray,tcwv::AbstractArray,tvec::Abstract
     return pvec,pstd
 
 end
+
+function bretherthoncurve(;
+    pdir::AbstractString, fnc::AbstractString,
+    experiment::AbstractString, config::AbstractString
+)
+
+    init,sroot = samstartup(
+        tmppath="",prjpath=pdir,fname=fnc,
+        experiment=experiment,config=config,welcome=false
+    )
+
+    prcp = collate(init,sroot,modID="m2D",parID="prcp"); prcp = prcp[:,:,1921:end]
+    tcwv = collate(init,sroot,modID="m2D",parID="tcw");  tcwv = tcwv[:,:,1921:end]
+    scwv = collate(init,sroot,modID="m2D",parID="swp");  scwv = scwv[:,:,1921:end]
+
+    return bretherthoncurve(prcp,tcwv,scwv)
+
+end

@@ -37,7 +37,7 @@ function domainmean_timeseries2D(
 
     end
 
-    return data,stime["t2D"],stime["tbegin"]
+    return data,stime["t2D"]
 
 end
 
@@ -64,7 +64,7 @@ function domainmean_timeseries3D(
 
     end
 
-    return data,stime["t3D"],stime["tbegin"]
+    return data,stime["t3D"]
 
 end
 
