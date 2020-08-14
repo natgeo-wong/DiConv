@@ -10,15 +10,15 @@ This repository contains the analysis scripts and output for the **DiConv** proj
 ## Current Status
 
 **SAM Model**
-* [ ] Build SAM model and run basic test cases
-* [ ] Write scripts (maybe a package?) to analyse test output and expand to other variables
-* [ ] Apply Weak Temperature Gradient (WTG) and/or damp Gravity Waves to SAM
+* [x] Build SAM model and run basic test cases
+* [x] Write scripts (maybe a package?) to analyse test output and expand to other variables
+* [x] Apply Weak Temperature Gradient (WTG) and/or damp Gravity Waves to SAM
 * [ ] Run simulations w/ moisture flux at various levels
 
 **Experiments**
-* [ ] **Control (CON):** No diurnal cycle of heating, take yearly mean
-* [ ] **Diurnal (DIF):** Impose a diurnal cycle of heating on the domain
-	* [ ] Vary strength of diurnal cycle
+* [x] **Control (CON):** No diurnal cycle of heating, take yearly mean
+* [x] **Diurnal (DIF):** Impose a diurnal cycle of heating on the domain
+	* [x] Vary strength of diurnal cycle --> done by changing slab depth of dynamic ocean
 * [ ] **Moisture (MOIST):** Impose a source/flux of moisture into the domain
 	* [ ] Vary strength of moisture source and level of input
 
