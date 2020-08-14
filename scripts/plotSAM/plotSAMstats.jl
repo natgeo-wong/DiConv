@@ -5,7 +5,7 @@ using SAMTools
 using Statistics
 
 include(srcdir("plots.jl"))
-mkpath(plotsdir("statplots"))
+mkpath(plotsdir("SAM_STAT"))
 
 plotstatsummary(isdiurnal=true,isdynamic=true,slab=0.1,iswtg=true)
 plotstatsummary(isdiurnal=true,isdynamic=true,slab=0.2,iswtg=true)

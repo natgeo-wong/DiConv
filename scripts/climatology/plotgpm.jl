@@ -105,4 +105,5 @@ for ax in axs
     ax.format(abc=true,grid="on")
 end
 
-f.savefig(plotsdir("gpmprcp.png"),transparent=false,dpi=200)
+mkpath(plotsdir("OBS_CLIMATE"))
+f.savefig(plotsdir("OBS_CLIMATE/gpmprcp.png"),transparent=false,dpi=200)

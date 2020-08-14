@@ -63,4 +63,4 @@ axs[2].format(
     suptitle="Diurnal Variability of Total Column Water against Slab Depth"
 )
 
-f.savefig(plotsdir("wtg-tcw.png"),transparent=false,dpi=200)
+f.savefig(plotsdir("SAM_PLOTS/tcw.png"),transparent=false,dpi=200)

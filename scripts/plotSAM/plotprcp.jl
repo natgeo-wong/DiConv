@@ -63,4 +63,4 @@ axs[2].format(
     suptitle="Diurnal Variability of Precipitation against Slab Depth"
 )
 
-f.savefig(plotsdir("wtg-prcp.png"),transparent=false,dpi=200)
+f.savefig(plotsdir("SAM_PLOTS/prcp.png"),transparent=false,dpi=200)

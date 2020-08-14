@@ -76,7 +76,7 @@ function plotstatsummary(;
     for ii = 1 : 3; axs[ii].format(ylim=(0,20)) end
     for ii = 1 : 6; axs[ii].format(abc=true,xlabel="Time Elapsed / days") end
 
-    f.savefig(plotsdir("statplot-$(wtgID)-$(diID)-$(sstID).png"),transparent=false,dpi=200)
+    f.savefig(plotsdir("SAM_STAT/$(wtgID)-$(diID)-$(sstID).png"),transparent=false,dpi=200)
 
     return init
 

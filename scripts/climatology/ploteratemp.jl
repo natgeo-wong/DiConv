@@ -123,4 +123,5 @@ for ax in axs
     ax.format(abc=true,grid="on")
 end
 
-f.savefig(plotsdir("erasurfacetemp.png"),transparent=false,dpi=200)
+mkpath(plotsdir("OBS_CLIMATE"))
+f.savefig(plotsdir("OBS_CLIMATE/erasurfacetemp.png"),transparent=false,dpi=200)

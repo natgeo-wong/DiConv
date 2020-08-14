@@ -65,4 +65,5 @@ for ax in axs
     ax.format(abc=true,grid="on")
 end
 
-f.savefig(plotsdir("eraprcp.png"),transparent=false,dpi=200)
+mkpath(plotsdir("OBS_CLIMATE"))
+f.savefig(plotsdir("OBS_CLIMATE/eraprcp.png"),transparent=false,dpi=200)

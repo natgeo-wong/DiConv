@@ -98,4 +98,4 @@ axs[2].format(
     rtitle="WTG: TRUE",abc=true
 )
 
-f.savefig(plotsdir("tcwvVprcp.png"),transparent=false,dpi=200)
+f.savefig(plotsdir("SAM_PLOTS/tcwvVprcp.png"),transparent=false,dpi=200)
