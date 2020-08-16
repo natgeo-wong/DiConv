@@ -41,7 +41,7 @@ SFC_TAU_FXD    = .false.,
 longitude0 = 0.,
 latitude0  = 0.,
 day0       = 80.5,
-tabs_s     = 295,
+tabs_s     = 300,
 
 depth_slab_ocean = 1.,
 
@@ -55,7 +55,7 @@ doperpetual     = .false.,
 doseasons       = .false.,
 dosolarconstant = .true.,
 zenith_angle    = 51.7,
-solar_constant  = 950.0,
+solar_constant  = 945.0,
 
 doisccp = .false.,
 domodis = .false.,
