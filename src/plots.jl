@@ -5,7 +5,9 @@ using PyCall
 using LaTeXStrings
 pplt = pyimport("proplot");
 
-function plotstatsummary(;
+include(srcdir("common.jl"))
+
+function plotteststats(;
     iswtg::Bool=false, isdiurnal::Bool=false, isdynamic::Bool=false,
     temp::Real=0, slab::Real=1
 )
@@ -133,5 +135,115 @@ function plotwtglatitude(;
     for ii = 1 : 6; axs[ii].format(abc=true,xlabel="Time Elapsed / days") end
 
     f.savefig(plotsdir("wtgtests/RCEtest_$ID-$(domain)km.png"),transparent=false,dpi=200)
+
+end
+
+function plotcteststats(;
+    insolation::Real, istest::Bool=false
+)
+
+    experiment = "control_tests"; config = "insol$(@sprintf("%5.1f",insolation))"
+
+    if istest
+          fID = "RCE_DiConv-ControlTest-test.nc"
+    else; fID = "RCE_DiConv-ControlTest.nc"
+    end
+
+    rce = NCDataset(datadir(joinpath(experiment,config,"OUT_STAT",fID)))
+
+    z  = rce["z"][:]/1000; t = rce["time"][:] .- 80.5;
+    cld = rce["CLD"][:]*100; rh = rce["RELH"][:]; tair = rce["TABS"][:];
+    pwv = rce["PW"][:]; prcp = rce["PREC"][:]./24; t_sst = rce["SST"][:];
+
+    cld[cld.==0] .= NaN;
+
+    pplt.close(); f,axs = pplt.subplots(nrows=3,ncols=2,axwidth=4,aspect=2,sharey=0)
+
+    c = axs[1].contourf(t,z,cld,norm="segmented",levels=[0,1,2,5,10,20,50,80,90,100]);
+    axs[1].colorbar(c,loc="r"); axs[1].format(rtitle="Cloud Cover Fraction / %")
+
+    c = axs[2].contourf(t,z,rh,norm="segmented",levels=[0,1,2,5,10,20,50,80,90,100]);
+    axs[2].colorbar(c,loc="r"); axs[2].format(rtitle="Relative Humidity / %")
+
+    c = axs[3].contourf(t,z,tair,levels=150:10:300,);
+    axs[3].colorbar(c,loc="r",ticks=30); axs[3].format(rtitle="Air Temperature / K")
+
+    axs[4].plot(t,t_sst,lw=1); axs[4].format(
+        xlim=(0,70),ylim=(300,310),
+        rtitle="Sea Surface Temperature / K"
+    )
+    axs[5].plot(t,pwv,lw=1); axs[5].format(
+        xlim=(0,70),ylim=(0,70),
+        rtitle="Precipitable Water / mm"
+    )
+    axs[6].plot(t,prcp,lw=1); axs[6].format(
+        xlim=(0,70),ylim=(0,0.5),
+        rtitle=L"Precipiation Rate / mm hr$^{-1}$",
+        suptitle=string("Insolation = $(insolation) ",L"W m$^{-2}$")
+    )
+
+    for ii = 1 : 3; axs[ii].format(ylim=(0,20)) end
+    for ii = 1 : 6; axs[ii].format(abc=true,xlabel="Time Elapsed / days") end
+
+    if istest
+          f.savefig(plotsdir("SAM_STAT/$(experiment)-$(config)-t.png"),transparent=false)
+    else; f.savefig(plotsdir("SAM_STAT/$(experiment)-$(config).png"),transparent=false)
+    end
+
+end
+
+function plotcontrolstats(;
+    isocean::Bool, iswtg::Bool=false, isrce::Bool=true
+)
+
+    if isocean; sfc = "ocean"; else; sfc = "land" end
+    if iswtg;   wtg = "wtg";   else; wtg = "rce"  end
+    if isrce;   rce = "rce";   else; rce = "trp"  end
+
+    experiment = "control"
+    config = "$isocean-$(uppercase(iswtg))-insol$(uppercase(rce))"
+    fID = "RCE_DiConv-Control.nc"
+    rce = NCDataset(datadir(joinpath(experiment,config,"OUT_STAT",fID)))
+
+    z  = rce["z"][:]/1000; t = rce["time"][:] .- 80.5;
+    cld = rce["CLD"][:]*100; rh = rce["RELH"][:]; tair = rce["TABS"][:];
+    pwv = rce["PW"][:]; prcp = rce["PREC"][:]./24; t_sst = rce["SST"][:];
+
+    cld[cld.==0] .= NaN;
+
+    close(rce)
+
+    pplt.close(); f,axs = pplt.subplots(nrows=3,ncols=2,axwidth=4,aspect=2,sharey=0)
+
+    c = axs[1].contourf(t,z,cld,norm="segmented",levels=[0,1,2,5,10,20,50,80,90,100]);
+    axs[1].colorbar(c,loc="r"); axs[1].format(rtitle="Cloud Cover Fraction / %")
+
+    c = axs[2].contourf(t,z,rh,norm="segmented",levels=[0,1,2,5,10,20,50,80,90,100]);
+    axs[2].colorbar(c,loc="r"); axs[2].format(rtitle="Relative Humidity / %")
+
+    c = axs[3].contourf(t,z,tair,levels=150:10:300,);
+    axs[3].colorbar(c,loc="r",ticks=30); axs[3].format(rtitle="Air Temperature / K")
+
+    axs[4].plot(t,t_sst,lw=1); axs[4].format(
+        xlim=(0,70),ylim=(300,310),
+        rtitle="Sea Surface Temperature / K"
+    )
+    axs[5].plot(t,pwv,lw=1); axs[5].format(
+        xlim=(0,70),ylim=(0,70),
+        rtitle="Precipitable Water / mm"
+    )
+    axs[6].plot(t,prcp,lw=1); axs[6].format(
+        xlim=(0,70),ylim=(0,0.5),
+        rtitle=L"Precipiation Rate / mm hr$^{-1}$",
+        suptitle=string("Insolation = $(insolation) ",L"W m$^{-2}$")
+    )
+
+    for ii = 1 : 3; axs[ii].format(ylim=(0,20)) end
+    for ii = 1 : 6; axs[ii].format(abc=true,xlabel="Time Elapsed / days") end
+
+    if istest
+          f.savefig(plotsdir("SAM_STAT/$(experiment)-$(config)-t.png"),transparent=false)
+    else; f.savefig(plotsdir("SAM_STAT/$(experiment)-$(config).png"),transparent=false)
+    end
 
 end

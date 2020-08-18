@@ -68,10 +68,15 @@ function domainmean_timeseries3D(
 
 end
 
-function collate(
-    init::AbstractDict, sroot::AbstractDict;
+function collate(;
+    exp::AbstractString, config::AbstractString,
     modID::AbstractString, parID::AbstractString
 )
+
+    init,sroot = samstartup(
+        tmppath="",prjpath=datadir(),fname="RCE_*",
+        experiment=exp,config=config,welcome=false
+    )
 
     smod,spar,stime = saminitialize(init,modID=modID,parID=parID)
     nx,ny,nz = smod["size"]; nt = length(stime["t2D"]); it = stime["it"]; tt = 0;
@@ -92,6 +97,6 @@ function collate(
 
     end
 
-    return data
+    return init["x"]/1000,init["y"]/1000,init["t2D"] .- init["day0"] .+ init["dayh"],data
 
 end

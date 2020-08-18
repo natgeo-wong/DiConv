@@ -14,7 +14,7 @@ function getsst(;
     sst,t2D = domainmean_timeseries(init,sroot,modID="d2D",parID="t_sst");
     tstep = convert(Integer,round(1/(t2D[2]-t2D[1])))
 
-    return diurnal(sst,tstep),tstep
+    return diurnal(removespin(sst,tstep,days=20),tstep),tstep
 
 end
 
@@ -30,7 +30,7 @@ function getprcp(;
     prcp,t2D = domainmean_timeseries(init,sroot,modID="m2D",parID="prcp");
     tstep = convert(Integer,round(1/(t2D[2]-t2D[1])))
 
-    return diurnal(prcp,tstep),tstep
+    return diurnal(removespin(prcp,tstep,days=20),tstep),tstep
 
 end
 
@@ -46,7 +46,7 @@ function gettcw(;
     tcw,t2D = domainmean_timeseries(init,sroot,modID="m2D",parID="tcw");
     tstep = convert(Integer,round(1/(t2D[2]-t2D[1])))
 
-    return diurnal(tcw,tstep),tstep
+    return diurnal(removespin(tcw,tstep,days=20),tstep),tstep
 
 end
 
@@ -59,10 +59,10 @@ function getsol(;
         experiment=experiment,config=config,welcome=false
     )
 
-    tcw,t2D = domainmean_timeseries(init,sroot,modID="r2D",parID="sol_net_toa");
-    tstep = convert(Integer,round(1/(t2D[2]-t2D[1])))
+    sol,t2D = domainmean_timeseries(init,sroot,modID="r2D",parID="sol_net_toa");
+    tstep = convert(Integer,round(1/(t2D[2]-t2D[1])));
 
-    return diurnal(tcw,tstep),tstep
+    return diurnal(removespin(sol,tstep,days=20),tstep),tstep
 
 end
 
@@ -71,5 +71,11 @@ function diurnal(var::Vector{<:Real},tstep::Integer)
     lt = length(var); nday = floor(Integer,lt/tstep)
     var = @view var[1:nday*tstep];
     return dropdims(mean(reshape(var,tstep,:),dims=2),dims=2)
+
+end
+
+function removespin(vec::Vector,tstep::Integer; days::Integer)
+
+    return vec[(days*tstep+1):end]
 
 end
