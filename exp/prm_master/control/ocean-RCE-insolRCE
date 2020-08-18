@@ -1,6 +1,6 @@
 &PARAMETERS
 
-caseid ='DiConv-ControlTest',
+caseid ='DiConv-Control',
 
 dx = 2000.,
 dy = 2000.,
