@@ -41,9 +41,9 @@ SFC_TAU_FXD    = .false.,
 longitude0 = 0.,
 latitude0  = 0.,
 day0       = 80.5,
-tabs_s     = 302,
+tabs_s     = 300,
 
-depth_slab_ocean = 1.,
+depth_slab_ocean = 5.,
 
 nrad = 12,
 
@@ -70,14 +70,14 @@ doSAMconditionals     = .false.,
 dosatupdnconditionals = .false.,
 
 nsave2D      = 45,
-nsave2Dstart = 0,
+nsave2Dstart = 999999,
 nsave2Dend   = 999999999,
 save2Dbin    = .true.,
 save2Davg    = .true.,
 save2Dsep    = .true.,
 
 nsave3D      = 180,
-nsave3Dstart = 0,
+nsave3Dstart = 999999,
 nsave3Dend   = 999999999,
 save3Dbin    = .true.,
 rad3Dout     = .true.,
