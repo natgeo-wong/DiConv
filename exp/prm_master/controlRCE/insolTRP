@@ -1,6 +1,6 @@
 &PARAMETERS
 
-caseid ='DiConv-Control',
+caseid ='DiConv-ControlRCE',
 
 dx = 2000.,
 dy = 2000.,
@@ -55,7 +55,7 @@ doperpetual     = .false.,
 doseasons       = .false.,
 dosolarconstant = .true.,
 zenith_angle    = 51.7,
-solar_constant  = 900.0,
+solar_constant  = 1367.0,
 
 doisccp = .false.,
 domodis = .false.,
