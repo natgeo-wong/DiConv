@@ -98,8 +98,8 @@ itau_wtg_qnudge = 2.,                   ! inverse nudging timescale for q in 1/d
 tauz0_wtg_qnudge = 3.e3,
 taulz_wtg_qnudge = 1.5e3,
 
-dowtg_tnudge = .true.,                 ! enable temperature nudging above tropopause
-itau_wtg_tnudge = 2.,                   ! inverse nudging timescale for temperature, 1/day
+dowtg_tnudge = .false.,                 ! enable temperature nudging above tropopause
+itau_wtg_tnudge = 1.,                   ! inverse nudging timescale for temperature, 1/day
 taulz_wtg_tnudge = 1.5e3,
 
 /
