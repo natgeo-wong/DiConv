@@ -13,6 +13,8 @@ logs/
 references/**/*.pdf
 run/
 exp/run_*
+exp/prm/*archive*
+exp/prm/*sample*
 
 ################################################################################
 #                        Cluster Job Submission Scripts                        #
@@ -20,7 +22,6 @@ exp/run_*
 
 *.slm
 *.pbs
-exp/prm_master/samples
 
 ################################################################################
 #                              NETCDF Data Files                               #
