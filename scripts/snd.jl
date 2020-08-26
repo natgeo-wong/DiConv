@@ -4,5 +4,5 @@ using SAMTools
 
 include(srcdir("snd.jl"))
 
-createsnd(config="ocean-RCE-insolRCE")
-createsnd(config="ocean-RCE-insolTRP")
+createsnd("insolRCE",exp="RCEProfile",config="InsolRCE")
+createsnd("insolTRP",exp="RCEProfile",config="InsolTRP")
