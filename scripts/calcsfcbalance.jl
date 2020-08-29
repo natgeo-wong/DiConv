@@ -2,10 +2,12 @@ using DrWatson
 @quickactivate "DiConv"
 using SAMTools
 
-include(srcdir("resort.jl"))
+# radiationbalance("dynamicN-insolRCE-sndRCE","TestWTG",prjpath=datadir(),fname="RCE")
+# radiationbalance("dynamicN-insolTRP-sndRCE","TestWTG",prjpath=datadir(),fname="RCE")
+# radiationbalance("dynamicN-insolTRP-sndTRP","TestWTG",prjpath=datadir(),fname="RCE")
+# radiationbalance("dynamicY-insolRCE-sndRCE","TestWTG",prjpath=datadir(),fname="RCE")
+# radiationbalance("dynamicY-insolTRP-sndRCE","TestWTG",prjpath=datadir(),fname="RCE")
+# radiationbalance("dynamicY-insolTRP-sndTRP","TestWTG",prjpath=datadir(),fname="RCE")
 
-radiationbalance("Insol880.0","FindInsolRCE",prjpath=datadir(),fname="RCE")
-radiationbalance("Insol890.0","FindInsolRCE",prjpath=datadir(),fname="RCE")
-radiationbalance("Insol900.0","FindInsolRCE",prjpath=datadir(),fname="RCE")
-radiationbalance("Insol910.0","FindInsolRCE",prjpath=datadir(),fname="RCE")
-radiationbalance("Insol920.0","FindInsolRCE",prjpath=datadir(),fname="RCE")
+radiationbalance("diurnalN-insolRCE-sndRCE","TestWTG",prjpath=datadir(),fname="RCE")
+radiationbalance("diurnalN-insolTRP-sndTRP","TestWTG",prjpath=datadir(),fname="RCE")
