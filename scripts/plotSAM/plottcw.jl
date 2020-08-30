@@ -47,8 +47,8 @@ axs[1].plot(tvec,cont8,lw=1,label="00.1",legend="ul")
 
 axs[1].format(
     xlim=(0,24),xlocator=[0,3,6,9,12,15,18,21,24],#ylim=(295,315),
-    xlabel="Hour of Day",ylabel="Deviation from Mean / K",
-    suptitle="Diurnal Variability of SST against Slab Depth"
+    xlabel="Hour of Day",ylabel="Deviation from Mean / mm",
+    suptitle="Diurnal Cycle of Column Water against Slab Depth (m)"
 )
 
 f.savefig(plotsdir("SAM_PLOTS/tcw.png"),transparent=false,dpi=200)

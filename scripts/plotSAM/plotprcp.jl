@@ -33,7 +33,7 @@ cont6 = vcat(cont6[48:end],cont6[1:48]) ./ 24
 cont7 = vcat(cont7[48:end],cont7[1:48]) ./ 24
 cont8 = vcat(cont8[48:end],cont8[1:48]) ./ 24
 
-pplt.close(); f,axs = pplt.subplots(ncols=2,axwidth=4,aspect=2,sharey=1)
+pplt.close(); f,axs = pplt.subplots(ncols=1,axwidth=4,aspect=2,sharey=1)
 
 axs[1].plot(tvec,cont0,lw=1,label="Inf",legend="ul")
 axs[1].plot(tvec,cont1,lw=1,label="20.0",legend="ul")
@@ -46,10 +46,9 @@ axs[1].plot(tvec,cont7,lw=1,label="00.2",legend="ul")
 axs[1].plot(tvec,cont8,lw=1,label="00.1",legend="ul")
 
 axs[1].format(
-    xlim=(0,24),xlocator=[0,3,6,9,12,15,18,21,24],ylim=(0.1,2.5),
-    xlabel="Hour of Day",ylabel="Deviation from Mean / K",
-    rtitle="WTG: False",abc=true,
-    suptitle="Diurnal Variability of SST against Slab Depth"
+    xlim=(0,24),xlocator=[0,3,6,9,12,15,18,21,24],ylim=(0,2.5),
+    xlabel="Hour of Day",ylabel=L"Precipitation Rate / mm hr$^{-1}$",
+    suptitle="Diurnal Cycle of Precipitation against Slab Depth (m)"
 )
 
 f.savefig(plotsdir("SAM_PLOTS/prcp.png"),transparent=false,dpi=200)
