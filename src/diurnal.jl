@@ -48,7 +48,7 @@ function diurnal(var::AbstractArray{<:Real,2},tstep::Integer)
 
     nz,nt = size(var); nday = floor(Integer,nt/tstep)
     var = @view var[:,1:nday*tstep];
-    return dropdims(mean(reshape(var,nz,tstep,:),dims=2),dims=2)
+    return dropdims(mean(reshape(var,nz,tstep,:),dims=3),dims=3)
 
 end
 
