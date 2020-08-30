@@ -15,7 +15,7 @@ pe3,_ = bretherthoncurve("DiurnalAmp","Slab05.0")
 pe4,_ = bretherthoncurve("DiurnalAmp","Slab02.0")
 pe5,_ = bretherthoncurve("DiurnalAmp","Slab01.0")
 pe6,_ = bretherthoncurve("DiurnalAmp","Slab00.5")
-pe7,_ = bretherthoncurve("DiurnalAmp","Slab20.2")
+pe7,_ = bretherthoncurve("DiurnalAmp","Slab00.2")
 pe8,_ = bretherthoncurve("DiurnalAmp","Slab00.1")
 
 pplt.close(); f,axs = pplt.subplots(axwidth=3,aspect=1.5)
