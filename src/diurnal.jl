@@ -2,8 +2,9 @@ using Statistics
 
 include(srcdir("common.jl"));
 
-function getsst(
-    experiment::AbstractString, config::AbstractString; days=0
+function getdiurnal(
+    experiment::AbstractString, config::AbstractString;
+    modID::AbstractString, parID::AbstractString, days::Integer=0
 )
 
     init,sroot = samstartup(
@@ -11,58 +12,10 @@ function getsst(
         experiment=experiment,config=config,welcome=false
     )
 
-    sst,t2D = domainmean_timeseries(init,sroot,modID="d2D",parID="t_sst");
+    data,t2D = domainmean_timeseries(init,sroot,modID=modID,parID=parID);
     tstep = convert(Integer,round(1/(t2D[2]-t2D[1])))
 
-    return diurnal(removespin(sst,tstep,days=days),tstep),tstep
-
-end
-
-function getprcp(
-    experiment::AbstractString, config::AbstractString; days=0
-)
-
-    init,sroot = samstartup(
-        tmppath="",prjpath=datadir(),fname="RCE_*",
-        experiment=experiment,config=config,welcome=false
-    )
-
-    prcp,t2D = domainmean_timeseries(init,sroot,modID="m2D",parID="prcp");
-    tstep = convert(Integer,round(1/(t2D[2]-t2D[1])))
-
-    return diurnal(removespin(prcp,tstep,days=days),tstep),tstep
-
-end
-
-function gettcw(
-    experiment::AbstractString, config::AbstractString; days=0
-)
-
-    init,sroot = samstartup(
-        tmppath="",prjpath=datadir(),fname="RCE_*",
-        experiment=experiment,config=config,welcome=false
-    )
-
-    tcw,t2D = domainmean_timeseries(init,sroot,modID="m2D",parID="tcw");
-    tstep = convert(Integer,round(1/(t2D[2]-t2D[1])))
-
-    return diurnal(removespin(tcw,tstep,days=days),tstep),tstep
-
-end
-
-function getsol(
-    experiment::AbstractString, config::AbstractString; days=0
-)
-
-    init,sroot = samstartup(
-        tmppath="",prjpath=datadir(),fname="RCE_*",
-        experiment=experiment,config=config,welcome=false
-    )
-
-    sol,t2D = domainmean_timeseries(init,sroot,modID="r2D",parID="sol_net_toa");
-    tstep = convert(Integer,round(1/(t2D[2]-t2D[1])));
-
-    return diurnal(removespin(sol,tstep,days=days),tstep),tstep
+    return diurnal(removespin(data,tstep,days=days),tstep),tstep
 
 end
 

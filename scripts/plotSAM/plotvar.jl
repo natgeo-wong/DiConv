@@ -10,15 +10,15 @@ pplt = pyimport("proplot");
 
 include(srcdir("diurnal.jl"));
 
-cont0,t = gettcw("DiurnalAmp","SlabInf")
-cont1,_ = gettcw("DiurnalAmp","Slab20.0")
-cont2,_ = gettcw("DiurnalAmp","Slab10.0")
-cont3,_ = gettcw("DiurnalAmp","Slab05.0")
-cont4,_ = gettcw("DiurnalAmp","Slab02.0")
-cont5,_ = gettcw("DiurnalAmp","Slab01.0")
-cont6,_ = gettcw("DiurnalAmp","Slab00.5")
-cont7,_ = gettcw("DiurnalAmp","Slab00.2")
-cont8,_ = gettcw("DiurnalAmp","Slab00.1")
+cont0,t = getdiurnal("DiurnalAmp","SlabInf",modID=mID,parID=pID)
+cont1,_ = getdiurnal("DiurnalAmp","Slab20.0",modID=mID,parID=pID)
+cont2,_ = getdiurnal("DiurnalAmp","Slab10.0",modID=mID,parID=pID)
+cont3,_ = getdiurnal("DiurnalAmp","Slab05.0",modID=mID,parID=pID)
+cont4,_ = getdiurnal("DiurnalAmp","Slab02.0",modID=mID,parID=pID)
+cont5,_ = getdiurnal("DiurnalAmp","Slab01.0",modID=mID,parID=pID)
+cont6,_ = getdiurnal("DiurnalAmp","Slab00.5",modID=mID,parID=pID)
+cont7,_ = getdiurnal("DiurnalAmp","Slab00.2",modID=mID,parID=pID)
+cont8,_ = getdiurnal("DiurnalAmp","Slab00.1",modID=mID,parID=pID)
 
 tvec = (1:t) ./ (t/24) .+ 12; tvec = collect(tvec);
 tvec = mod.(vcat(tvec[48:end],tvec[1:48]),24); tvec[end] = 24
@@ -51,4 +51,4 @@ axs[1].format(
     suptitle="Diurnal Cycle of Column Water against Slab Depth (m)"
 )
 
-f.savefig(plotsdir("SAM_PLOTS/tcw.png"),transparent=false,dpi=200)
+f.savefig(plotsdir("SAM_PLOTS/$pID.png"),transparent=false,dpi=200)
