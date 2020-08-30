@@ -43,19 +43,20 @@ function bretherthoncurve(prcp::AbstractArray,tcwv::AbstractArray,tvec::Abstract
 
 end
 
-function bretherthoncurve(;
-    pdir::AbstractString, fnc::AbstractString,
-    experiment::AbstractString, config::AbstractString
+function bretherthoncurve(
+    experiment::AbstractString, config::AbstractString; days::Integer=0
 )
 
     init,sroot = samstartup(
-        tmppath="",prjpath=pdir,fname=fnc,
+        tmppath="",prjpath=datadir(),fname="RCE_*",
         experiment=experiment,config=config,welcome=false
     )
 
-    prcp = collate(init,sroot,modID="m2D",parID="prcp"); prcp = prcp[:,:,1921:end]
-    tcwv = collate(init,sroot,modID="m2D",parID="tcw");  tcwv = tcwv[:,:,1921:end]
-    scwv = collate(init,sroot,modID="m2D",parID="swp");  scwv = scwv[:,:,1921:end]
+    nt = convert(Integer,round(1/init["tstep2D"]))
+
+    prcp = collate(init,sroot,modID="m2D",parID="prcp"); prcp = prcp[:,:,(days*nt+1):end]
+    tcwv = collate(init,sroot,modID="m2D",parID="tcw");  tcwv = tcwv[:,:,(days*nt+1):end]
+    scwv = collate(init,sroot,modID="m2D",parID="swp");  scwv = scwv[:,:,(days*nt+1):end]
 
     return bretherthoncurve(prcp,tcwv,scwv)
 
