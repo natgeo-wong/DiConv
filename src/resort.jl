@@ -10,8 +10,16 @@ function resort2D(init::AbstractDict,sroot::AbstractDict)
     samresort(init,sroot,modID="m2D",parID="prcp")
     samresort(init,sroot,modID="m2D",parID="tcw")
     samresort(init,sroot,modID="m2D",parID="swp")
+    samresort(init,sroot,modID="r2D",parID="sol_net_toa")
+
+end
+
+function resortrad(init::AbstractDict,sroot::AbstractDict)
+
     samresort(init,sroot,modID="r2D",parID="hflux_s")
     samresort(init,sroot,modID="r2D",parID="hflux_l")
+    samresort(init,sroot,modID="r2D",parID="sw_net_sfc")
+    samresort(init,sroot,modID="r2D",parID="lw_net_sfc")
     samresort(init,sroot,modID="r2D",parID="sol_net_toa")
 
 end
@@ -50,6 +58,22 @@ function resortdiconv(
 
     if do2D;  resort2D(init,sroot)  end
     if do3D;  resort3D(init,sroot)  end
+    if dosst; resortsst(init,sroot) end
+
+end
+
+function resortsfctest(
+    experiment::AbstractString, config::AbstractString;
+    pdir::AbstractString, fname::AbstractString,
+    dosst::Bool=false
+)
+
+    init,sroot = samstartup(
+        prjpath=pdir,fname=fname,
+        experiment=experiment,config=config,
+        loadinit=false,welcome=false
+    ); resortrad(init,sroot)
+
     if dosst; resortsst(init,sroot) end
 
 end
