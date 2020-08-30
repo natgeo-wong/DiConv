@@ -3,7 +3,7 @@ using Statistics
 include(srcdir("common.jl"));
 
 function getsst(
-    experiment::AbstractString, config::AbstractString
+    experiment::AbstractString, config::AbstractString; days=0
 )
 
     init,sroot = samstartup(
@@ -14,12 +14,12 @@ function getsst(
     sst,t2D = domainmean_timeseries(init,sroot,modID="d2D",parID="t_sst");
     tstep = convert(Integer,round(1/(t2D[2]-t2D[1])))
 
-    return diurnal(removespin(sst,tstep,days=50),tstep),tstep
+    return diurnal(removespin(sst,tstep,days=days),tstep),tstep
 
 end
 
 function getprcp(
-    experiment::AbstractString, config::AbstractString
+    experiment::AbstractString, config::AbstractString; days=0
 )
 
     init,sroot = samstartup(
@@ -30,12 +30,12 @@ function getprcp(
     prcp,t2D = domainmean_timeseries(init,sroot,modID="m2D",parID="prcp");
     tstep = convert(Integer,round(1/(t2D[2]-t2D[1])))
 
-    return diurnal(removespin(prcp,tstep,days=50),tstep),tstep
+    return diurnal(removespin(prcp,tstep,days=days),tstep),tstep
 
 end
 
 function gettcw(
-    experiment::AbstractString, config::AbstractString
+    experiment::AbstractString, config::AbstractString; days=0
 )
 
     init,sroot = samstartup(
@@ -46,12 +46,12 @@ function gettcw(
     tcw,t2D = domainmean_timeseries(init,sroot,modID="m2D",parID="tcw");
     tstep = convert(Integer,round(1/(t2D[2]-t2D[1])))
 
-    return diurnal(removespin(tcw,tstep,days=50),tstep),tstep
+    return diurnal(removespin(tcw,tstep,days=days),tstep),tstep
 
 end
 
 function getsol(
-    experiment::AbstractString, config::AbstractString
+    experiment::AbstractString, config::AbstractString; days=0
 )
 
     init,sroot = samstartup(
@@ -62,7 +62,7 @@ function getsol(
     sol,t2D = domainmean_timeseries(init,sroot,modID="r2D",parID="sol_net_toa");
     tstep = convert(Integer,round(1/(t2D[2]-t2D[1])));
 
-    return diurnal(removespin(sol,tstep,days=50),tstep),tstep
+    return diurnal(removespin(sol,tstep,days=days),tstep),tstep
 
 end
 
