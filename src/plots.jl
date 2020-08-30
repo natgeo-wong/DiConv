@@ -5,245 +5,202 @@ using PyCall
 using LaTeXStrings
 pplt = pyimport("proplot");
 
-include(srcdir("common.jl"))
+function plotstatline(t::Vector{<:Real},data::Vector{<:Real},axsii::PyObject)
 
-function plotteststats(;
-    iswtg::Bool=false, isdiurnal::Bool=false, isdynamic::Bool=false,
-    temp::Real=0, slab::Real=1
-)
-
-    if iswtg
-          wtgID = "wtgY"; lat = 0
-    else; wtgID = "wtgN"; lat = 45
-    end
-
-    if isdiurnal; diID = "diurnalY"; else; diID = "diurnalN" end
-    if isdiurnal && isdynamic
-        if slab == 0
-            error("Diurnal Cycle and Dynamic Ocean, but Slab Depth not defined.")
-        end
-        if typeof(slab) <: Integer
-              sstID = "dynamicSST-slab$(@sprintf("%02d",slab))"
-        else; sstID = "dynamicSST-slab$(@sprintf("%2.1f",slab))"
-        end
-    else
-        if temp == 0
-            error("Sea Surface Temperature not defined.")
-        end
-        sstID = "fixedSST-temp$(@sprintf("%3d",temp))"
-    end
-
-    exp = "$(wtgID)-$(diID)"
-    fID = "RCE_$(diID)-$(sstID).nc"
-    rce = NCDataset(datadir(joinpath(exp,sstID,"OUT_STAT",fID)))
-    @load datadir(joinpath(exp,sstID,"RAW","init.jld2")) init
-
-    z  = rce["z"][:]/1000; t = rce["time"][:] .- init["day0"] .+ init["dayh"];
-    cld = rce["CLD"][:]*100; rh = rce["RELH"][:]; tair = rce["TABS"][:];
-    pwv = rce["PW"][:]; prcp = rce["PREC"][:]./24
-
-    if iswtg; wwtg = rce["WWTG"][:] end
-
-    cld[cld.==0] .= NaN;
-
-    pplt.close(); f,axs = pplt.subplots(nrows=3,ncols=2,axwidth=4,aspect=2,sharey=0)
-
-    c = axs[1].contourf(t,z,cld,norm="segmented",levels=[0,1,2,5,10,20,50,80,90,100]);
-    axs[1].colorbar(c,loc="r"); axs[1].format(rtitle="Cloud Cover Fraction / %")
-
-    c = axs[2].contourf(t,z,rh,norm="segmented",levels=[0,1,2,5,10,20,50,80,90,100]);
-    axs[2].colorbar(c,loc="r"); axs[2].format(rtitle="Relative Humidity / %")
-
-    c = axs[3].contourf(t,z,tair,levels=150:10:300,);
-    axs[3].colorbar(c,loc="r",ticks=30); axs[3].format(rtitle="Air Temperature / K")
-
-    axs[5].plot(t,pwv,lw=1); axs[5].format(
-        xlim=(0,70),ylim=(0,70),
-        rtitle="Precipitable Water / mm"
-    )
-    axs[6].plot(t,prcp,lw=1); axs[6].format(
-        xlim=(0,70),ylim=(0,5),
-        rtitle=L"Precipiation Rate / mm hr$^{-1}$",
-        suptitle=string(
-            "Slab Depth = $(@sprintf("%2.1f",slab)) m, Latitude0 = 0",
-            L"$\degree$",", WTG = $(uppercase(string(iswtg)))"
-        )
-    )
-
-    if iswtg
-        c = axs[4].contourf(t,z,wwtg.*3.6,levels=0:0.1:1,extend="min");
-        axs[4].colorbar(c,loc="r"); axs[4].format(rtitle="Induced Vertical Wind / km/hr")
-    end
-
-    for ii = 1 : 3; axs[ii].format(ylim=(0,20)) end
-    for ii = 1 : 6; axs[ii].format(abc=true,xlabel="Time Elapsed / days") end
-
-    f.savefig(plotsdir("SAM_STAT/$(wtgID)-$(diID)-$(sstID).png"),transparent=false,dpi=200)
-
-    return init
+    axsii.plot(t,data,lw=1);
 
 end
 
-function plotwtglatitude(;
-    lat::Integer, domain::Integer
+function plotstatcontourf(
+    t::Vector{<:Real},z::Vector{<:Real},
+    data::AbstractArray{<:Real,2},
+    axsii::PyObject
 )
 
-    ID = "wtgY-latitude$(lat)";
-    ds = NCDataset(datadir("wtgY-latitudes-$(domain)km/RCE_$(ID).nc"))
+    c = axsii.contourf(
+        t,z,data,cmap="Blues",
+        norm="segmented",levels=[0,1,2,5,10,20,50,80,90,95,99,100]
+    ); axsii.colorbar(c,loc="r");
 
-    z  = ds["z"][:]/1000; t = ds["time"][:] .- 80.5 .+ 0.5; cld = ds["CLD"][:]*100
-    rh = ds["RELH"][:];
-    pwv = ds["PW"][:]; prcp = ds["PREC"][:]./24
-    tair = ds["TABS"][:]; wwtg = ds["WWTG"][:]
-    close(ds)
+end
 
-    pplt.close(); f,axs = pplt.subplots(nrows=3,ncols=2,axwidth=4,aspect=2,sharey=0)
-    cld[cld.==0] .= NaN;
+function plotstatTAIR(
+    t::Vector{<:Real},z::Vector{<:Real},
+    tair::AbstractArray{<:Real,2},
+    axsii::PyObject
+)
 
-    c = axs[1].contourf(
-        t,z,cld,
-        norm="segmented",levels=[0,1,2,5,10,20,50,80,90,100]
-    ); axs[1].colorbar(c,loc="r"); axs[1].format(rtitle="Cloud Cover Fraction / %")
-
-    c = axs[2].contourf(
-        t,z,rh,
-        norm="segmented",levels=[0,1,2,5,10,20,50,80,90,100]
-    ); axs[2].colorbar(c,loc="r"); axs[2].format(rtitle="Relative Humidity / %")
-
-    c = axs[3].contourf(
-        t,z,tair,levels=150:10:300,
-    ); axs[3].colorbar(c,loc="r",ticks=30); axs[3].format(rtitle="Air Temperature / K")
-
-    axs[5].plot(t,pwv,lw=1); axs[5].format(
-        xlim=(0,70),ylim=(0,70),
-        rtitle="Precipitable Water / mm"
-    )
-    axs[6].plot(t,prcp,lw=1); axs[6].format(
-        xlim=(0,70),ylim=(0,5),
-        rtitle=L"Precipiation Rate / mm hr$^{-1}$",
-        suptitle=L"Slab Depth = 1m, Latitude0 = 0$\degree$, WTG = True"
-    )
-
-    c = axs[4].contourf(
-        t,z,wwtg.*3.6,levels=0:0.1:1,extend="min",
-        #norm="segmented",levels=[0,1,2,5,10,20,50,80,90,100]
+    c = axsii.contourf(
+        t,z,tair,
     );
-    axs[4].colorbar(c,loc="r");
-    axs[4].format(rtitle="Induced Vertical Wind / km/hr")
-
-    for ii = 1 : 3; axs[ii].format(ylim=(0,20)) end
-    for ii = 1 : 6; axs[ii].format(abc=true,xlabel="Time Elapsed / days") end
-
-    f.savefig(plotsdir("wtgtests/RCEtest_$ID-$(domain)km.png"),transparent=false,dpi=200)
+    axsii.colorbar(c,loc="r");
+    axsii.format(rtitle=L"Large-Scale W-Advect Moisture Tendency / g kg$^{-1}$ hr$^{-1}$")
 
 end
 
-function plotcteststats(;
-    insolation::Real, istest::Bool=false
+function plotstatTAIRdiurnal(
+    t::Vector{<:Real},z::Vector{<:Real},
+    tair::AbstractArray{<:Real,2},
+    axsii::PyObject
 )
 
-    experiment = "control_tests"; config = "insol$(@sprintf("%5.1f",insolation))"
+    c = axsii.contourf(
+        t,z,tair .- mean(tair,dims=2)
+    );
+    axsii.colorbar(c,loc="r");
+    axsii.format(rtitle=L"Large-Scale W-Advect Moisture Tendency / g kg$^{-1}$ hr$^{-1}$")
 
-    if istest
-          fID = "RCE_DiConv-ControlTest-test.nc"
-    else; fID = "RCE_DiConv-ControlTest.nc"
-    end
+end
 
-    rce = NCDataset(datadir(joinpath(experiment,config,"OUT_STAT",fID)))
+function plotstatWTG(
+    t::Vector{<:Real},z::Vector{<:Real},
+    wwtg::AbstractArray{<:Real,2},
+    axsii::PyObject
+)
 
-    z  = rce["z"][:]/1000; t = rce["time"][:] .- 80.5;
-    cld = rce["CLD"][:]*100; rh = rce["RELH"][:]; tair = rce["TABS"][:];
-    pwv = rce["PW"][:]; prcp = rce["PREC"][:]./24; t_sst = rce["SST"][:];
+    c = axsii.contourf(
+        t,z,wwtg,cmap="RdBu_r",extend="both",
+        norm="segmented",levels=[-20,-10,-5,-2,-1,1,2,5,10,20]/100
+    ); axsii.colorbar(c,loc="r");
+    axsii.format(rtitle="WTG Induced Vertical Wind / m/s")
 
+end
+
+function retrieveplottingstats(
+    experiment::AbstractString, config::AbstractString, plotWTG::Bool=false
+)
+
+    rce = NCDataset(datadir(joinpath(
+        experiment,config,"OUT_STAT",
+        "RCE_DiConv-$(experiment).nc"
+    )))
+
+    z  = rce["z"][:]/1000; t = rce["time"][:] .- 80;
+    cld = rce["CLD"][:]*100
+    rh  = rce["RELH"][:]; tair = rce["TABS"][:];
+    pwv = rce["PW"][:];   prcp = rce["PREC"][:]./24
+    sst = rce["SST"][:];  wwtg = 0;
+
+    if plotWTG; wwtg = rce["WWTG"][:] end
+
+    return z,t,cld,rh,pwv,prcp,tair,sst,wwtg
+
+end
+
+function plotstatsoverview(
+    experiment::AbstractString, config::AbstractString;
+    plotWTG::Bool=false, plotSST::Bool=false
+)
+
+    z,t,cld,rh,pwv,prcp,tair,sst,wwtg = retrieveplottingstats(experiment,config,plotWTG)
     cld[cld.==0] .= NaN;
 
     pplt.close(); f,axs = pplt.subplots(nrows=3,ncols=2,axwidth=4,aspect=2,sharey=0)
 
-    c = axs[1].contourf(t,z,cld,norm="segmented",levels=[0,1,2,5,10,20,50,80,90,100]);
-    axs[1].colorbar(c,loc="r"); axs[1].format(rtitle="Cloud Cover Fraction / %")
+    plotstatcontourf(t,z,cld,axs[1]); axs[1].format(rtitle="Cloud Cover Fraction / %")
+    plotstatcontourf(t,z,rh,axs[2]);  axs[2].format(rtitle="Relative Humidity / %")
+    plotstatTAIR(t,z,tair,axs[3])
 
-    c = axs[2].contourf(t,z,rh,norm="segmented",levels=[0,1,2,5,10,20,50,80,90,100]);
-    axs[2].colorbar(c,loc="r"); axs[2].format(rtitle="Relative Humidity / %")
+    plotstatline(t,pwv,axs[5]);
+    axs[5].format(rtitle="Precipitable Water / mm",ylim=(0,70))
+    plotstatline(t,prcp,axs[6]);
+    axs[6].format(rtitle=L"Precipiation Rate / mm hr$^{-1}$",ylim=(0,5))
 
-    c = axs[3].contourf(t,z,tair,levels=150:10:300,);
-    axs[3].colorbar(c,loc="r",ticks=30); axs[3].format(rtitle="Air Temperature / K")
-
-    axs[4].plot(t,t_sst,lw=1); axs[4].format(
-        xlim=(0,70),ylim=(300,310),
-        rtitle="Sea Surface Temperature / K"
-    )
-    axs[5].plot(t,pwv,lw=1); axs[5].format(
-        xlim=(0,70),ylim=(0,70),
-        rtitle="Precipitable Water / mm"
-    )
-    axs[6].plot(t,prcp,lw=1); axs[6].format(
-        xlim=(0,70),ylim=(0,0.5),
-        rtitle=L"Precipiation Rate / mm hr$^{-1}$",
-        suptitle=string("Insolation = $(insolation) ",L"W m$^{-2}$")
-    )
-
-    for ii = 1 : 3; axs[ii].format(ylim=(0,20)) end
-    for ii = 1 : 6; axs[ii].format(abc=true,xlabel="Time Elapsed / days") end
-
-    if istest
-          f.savefig(plotsdir("SAM_STAT/$(experiment)-$(config)-t.png"),transparent=false)
-    else; f.savefig(plotsdir("SAM_STAT/$(experiment)-$(config).png"),transparent=false)
+    if plotWTG; plotstatWTG(t,z,wwtg,axs[4])
+    else
+        if plotSST
+              plotstatline(t,sst,axs[4]);
+              axs[4].format(rtitle="Sea Surface Temperature / K")
+        else; plotstatline(t,tair[1,:],axs[4]);
+              axs[4].format(rtitle="25m Air Temperature / K")
+        end
     end
+
+    axs[1].format(suptitle="$(uppercase(experiment)) | $(uppercase(config))")
+    if plotWTG
+          for ii = 1 : 4; axs[ii].format(yscale="log") end
+    else; for ii = 1 : 3; axs[ii].format(yscale="log") end
+    end
+    for ii = 1 : 6; axs[ii].format(abc=true,xlim=(175,200),xlabel="Time Elapsed / days") end
+
+    f.savefig(plotsdir("SAM_STAT-SUMMARY/$(experiment)-$(config).png"),transparent=false,dpi=200)
 
 end
 
-function plotcontrolstats(;
-    isocean::Bool, iswtg::Bool=false, isrce::Bool=true
+function t2d(t::Vector{<:Real})
+
+    tstep = round(Integer,(length(t)-1)/(t[end]-t[1]))
+    t = mod.(t[(end-tstep+1):end],1); tmin = argmin(t)
+    tshift = tstep-tmin+1; t = circshift(t,tshift)
+    t = vcat(t[end]-1,t,t[1]+1)
+
+    return t*tstep,tstep,tshift
+
+end
+
+function diurnal(data::Vector{<:Real},tstep::Integer,tshift::Integer)
+
+    data = dropdims(mean(reshape(data,tstep,:),dims=2),dims=2);
+    data = circshift(data,tshift)
+    return vcat(data[end],data,data[1])
+
+end
+
+function diurnal(data::AbstractArray{<:Real,2},tstep::Integer,tshift::Integer)
+
+    nz = size(data,1)
+    data = dropdims(mean(reshape(data,nz,tstep,:),dims=3),dims=3);
+    data = circshift(data,(0,tshift))
+
+    return cat(dims=2,data[:,end],data,data[:,1])
+
+end
+
+function plotstatsdiurnal(
+    experiment::AbstractString, config::AbstractString;
+    plotWTG::Bool=false, plotSST::Bool=false,
+    days::Integer=100
 )
 
-    if isocean; sfc = "ocean"; else; sfc = "land" end
-    if iswtg;   wtg = "wtg";   else; wtg = "rce"  end
-    if isrce;   rce = "rce";   else; rce = "trp"  end
+    z,t,cld,rh,pwv,prcp,tair,sst,wwtg = retrieveplottingstats(experiment,config,plotWTG)
 
-    experiment = "control"
-    config = "$isocean-$(uppercase(iswtg))-insol$(uppercase(rce))"
-    fID = "RCE_DiConv-Control.nc"
-    rce = NCDataset(datadir(joinpath(experiment,config,"OUT_STAT",fID)))
-
-    z  = rce["z"][:]/1000; t = rce["time"][:] .- 80.5;
-    cld = rce["CLD"][:]*100; rh = rce["RELH"][:]; tair = rce["TABS"][:];
-    pwv = rce["PW"][:]; prcp = rce["PREC"][:]./24; t_sst = rce["SST"][:];
-
-    cld[cld.==0] .= NaN;
-
-    close(rce)
+    t,tstep,tshift = t2d(t); beg = days*tstep - 1
+    cld  = diurnal(cld[:,(end-beg):end],tstep,tshift); cld[cld.==0] .= NaN;
+    rh   = diurnal(rh[:,(end-beg):end],tstep,tshift)
+    pwv  = diurnal(pwv[(end-beg):end],tstep,tshift)
+    prcp = diurnal(prcp[(end-beg):end],tstep,tshift)
+    tair = diurnal(tair[:,(end-beg):end],tstep,tshift)
+    sst  = diurnal(sst[(end-beg):end],tstep,tshift)
+    if plotWTG; wwtg = diurnal(wwtg[:,(end-beg):end],tstep,tshift) end
 
     pplt.close(); f,axs = pplt.subplots(nrows=3,ncols=2,axwidth=4,aspect=2,sharey=0)
 
-    c = axs[1].contourf(t,z,cld,norm="segmented",levels=[0,1,2,5,10,20,50,80,90,100]);
-    axs[1].colorbar(c,loc="r"); axs[1].format(rtitle="Cloud Cover Fraction / %")
+    plotstatcontourf(t,z,cld,axs[1]); axs[1].format(rtitle="Cloud Cover Fraction / %")
+    plotstatcontourf(t,z,rh,axs[2]);  axs[2].format(rtitle="Relative Humidity / %")
+    plotstatTAIRdiurnal(t,z,tair,axs[3])
 
-    c = axs[2].contourf(t,z,rh,norm="segmented",levels=[0,1,2,5,10,20,50,80,90,100]);
-    axs[2].colorbar(c,loc="r"); axs[2].format(rtitle="Relative Humidity / %")
+    plotstatline(t,pwv,axs[5]);
+    axs[5].format(rtitle="Precipitable Water / mm")
+    plotstatline(t,prcp,axs[6]);
+    axs[6].format(rtitle=L"Precipiation Rate / mm hr$^{-1}$")
 
-    c = axs[3].contourf(t,z,tair,levels=150:10:300,);
-    axs[3].colorbar(c,loc="r",ticks=30); axs[3].format(rtitle="Air Temperature / K")
-
-    axs[4].plot(t,t_sst,lw=1); axs[4].format(
-        xlim=(0,70),ylim=(300,310),
-        rtitle="Sea Surface Temperature / K"
-    )
-    axs[5].plot(t,pwv,lw=1); axs[5].format(
-        xlim=(0,70),ylim=(0,70),
-        rtitle="Precipitable Water / mm"
-    )
-    axs[6].plot(t,prcp,lw=1); axs[6].format(
-        xlim=(0,70),ylim=(0,0.5),
-        rtitle=L"Precipiation Rate / mm hr$^{-1}$",
-        suptitle=string("Insolation = $(insolation) ",L"W m$^{-2}$")
-    )
-
-    for ii = 1 : 3; axs[ii].format(ylim=(0,20)) end
-    for ii = 1 : 6; axs[ii].format(abc=true,xlabel="Time Elapsed / days") end
-
-    if istest
-          f.savefig(plotsdir("SAM_STAT/$(experiment)-$(config)-t.png"),transparent=false)
-    else; f.savefig(plotsdir("SAM_STAT/$(experiment)-$(config).png"),transparent=false)
+    if plotWTG; plotstatWTG(t,z,wwtg,axs[4])
+    else
+        if plotSST
+              plotstatline(t,sst,axs[4]);
+              axs[4].format(rtitle="Sea Surface Temperature / K")
+        else; plotstatline(t,tair[1,:],axs[4]);
+              axs[4].format(rtitle="25m Air Temperature / K")
+        end
     end
+
+    axs[1].format(suptitle="$(uppercase(experiment)) | $(uppercase(config))")
+    if plotWTG
+          for ii = 1 : 4; axs[ii].format(yscale="log") end
+    else; for ii = 1 : 3; axs[ii].format(yscale="log") end
+    end
+    for ii = 1 : 6; axs[ii].format(abc=true,xlim=(0,tstep),xlabel="Hour of Day") end
+
+    f.savefig(plotsdir("SAM_STAT-DIURNAL/$(experiment)-$(config).png"),transparent=false,dpi=200)
 
 end

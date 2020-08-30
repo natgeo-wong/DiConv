@@ -2,7 +2,7 @@ using Statistics
 
 include(srcdir("common.jl"));
 
-function getsst(;
+function getsst(
     experiment::AbstractString, config::AbstractString
 )
 
@@ -14,11 +14,11 @@ function getsst(;
     sst,t2D = domainmean_timeseries(init,sroot,modID="d2D",parID="t_sst");
     tstep = convert(Integer,round(1/(t2D[2]-t2D[1])))
 
-    return diurnal(removespin(sst,tstep,days=20),tstep),tstep
+    return diurnal(removespin(sst,tstep,days=50),tstep),tstep
 
 end
 
-function getprcp(;
+function getprcp(
     experiment::AbstractString, config::AbstractString
 )
 
@@ -30,11 +30,11 @@ function getprcp(;
     prcp,t2D = domainmean_timeseries(init,sroot,modID="m2D",parID="prcp");
     tstep = convert(Integer,round(1/(t2D[2]-t2D[1])))
 
-    return diurnal(removespin(prcp,tstep,days=20),tstep),tstep
+    return diurnal(removespin(prcp,tstep,days=50),tstep),tstep
 
 end
 
-function gettcw(;
+function gettcw(
     experiment::AbstractString, config::AbstractString
 )
 
@@ -46,11 +46,11 @@ function gettcw(;
     tcw,t2D = domainmean_timeseries(init,sroot,modID="m2D",parID="tcw");
     tstep = convert(Integer,round(1/(t2D[2]-t2D[1])))
 
-    return diurnal(removespin(tcw,tstep,days=20),tstep),tstep
+    return diurnal(removespin(tcw,tstep,days=50),tstep),tstep
 
 end
 
-function getsol(;
+function getsol(
     experiment::AbstractString, config::AbstractString
 )
 
@@ -62,7 +62,7 @@ function getsol(;
     sol,t2D = domainmean_timeseries(init,sroot,modID="r2D",parID="sol_net_toa");
     tstep = convert(Integer,round(1/(t2D[2]-t2D[1])));
 
-    return diurnal(removespin(sol,tstep,days=20),tstep),tstep
+    return diurnal(removespin(sol,tstep,days=50),tstep),tstep
 
 end
 
