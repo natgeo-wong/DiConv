@@ -10,15 +10,15 @@ pplt = pyimport("proplot");
 
 include(srcdir("diurnal.jl"));
 
-cont0,t = getdiurnal("DiurnalAmp","SlabInf",modID=mID,parID=pID)
-cont1,_ = getdiurnal("DiurnalAmp","Slab20.0",modID=mID,parID=pID)
-cont2,_ = getdiurnal("DiurnalAmp","Slab10.0",modID=mID,parID=pID)
-cont3,_ = getdiurnal("DiurnalAmp","Slab05.0",modID=mID,parID=pID)
-cont4,_ = getdiurnal("DiurnalAmp","Slab02.0",modID=mID,parID=pID)
-cont5,_ = getdiurnal("DiurnalAmp","Slab01.0",modID=mID,parID=pID)
-cont6,_ = getdiurnal("DiurnalAmp","Slab00.5",modID=mID,parID=pID)
-cont7,_ = getdiurnal("DiurnalAmp","Slab00.2",modID=mID,parID=pID)
-cont8,_ = getdiurnal("DiurnalAmp","Slab00.1",modID=mID,parID=pID)
+cont0,t = getdiurnal2D("DiurnalAmp","SlabInf",modID=mID,parID=pID)
+cont1,_ = getdiurnal2D("DiurnalAmp","Slab20.0",modID=mID,parID=pID)
+cont2,_ = getdiurnal2D("DiurnalAmp","Slab10.0",modID=mID,parID=pID)
+cont3,_ = getdiurnal2D("DiurnalAmp","Slab05.0",modID=mID,parID=pID)
+cont4,_ = getdiurnal2D("DiurnalAmp","Slab02.0",modID=mID,parID=pID)
+cont5,_ = getdiurnal2D("DiurnalAmp","Slab01.0",modID=mID,parID=pID)
+cont6,_ = getdiurnal2D("DiurnalAmp","Slab00.5",modID=mID,parID=pID)
+cont7,_ = getdiurnal2D("DiurnalAmp","Slab00.2",modID=mID,parID=pID)
+cont8,_ = getdiurnal2D("DiurnalAmp","Slab00.1",modID=mID,parID=pID)
 
 tvec = (1:t) ./ (t/24) .+ 12; tvec = collect(tvec);
 tvec = mod.(vcat(tvec[48:end],tvec[1:48]),24); tvec[end] = 24

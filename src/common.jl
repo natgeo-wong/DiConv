@@ -64,7 +64,7 @@ function domainmean_timeseries3D(
 
     end
 
-    return data,stime["t3D"]
+    return data,smod["z"],stime["t3D"]
 
 end
 
