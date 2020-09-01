@@ -20,11 +20,11 @@ function prcp2hist(
     else; prcp   = collate(init,sroot,modID="m2D",parID="prcp")
     end
 
-    prcp = prcp/24;
+    prcp = prcp[prcp.!=0]; prcp = prcp/24
 
     if avg2D
-          edges = 0:0.02:10; w = fit(Histogram,prcp[:],edges).weights
-    else; edges = 0:0.5:100; w = fit(Histogram,prcp[:],edges).weights
+          edges = 0.1:0.1:10; w = fit(Histogram,prcp,edges).weights
+    else; edges = 0:0.5:100; w = fit(Histogram,prcp,edges).weights
     end
 
     return edges,w,mean(prcp)
