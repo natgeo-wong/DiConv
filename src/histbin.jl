@@ -23,8 +23,9 @@ function prcp2hist(
     prcp = prcp/24
 
     if avg2D
-          edges = 0:0.1:10; w = fit(Histogram,prcp,edges).weights
-    else; edges = 0:0.5:100; w = fit(Histogram,prcp,edges).weights
+          edges = 0:0.1:10; w = fit(Histogram,prcp[:],edges).weights
+    else; edges = vcat(0,collect(10 .^(-2:0.01:3)));
+          w = fit(Histogram,prcp[:],edges).weights
     end
 
     return edges,w,mean(prcp)
