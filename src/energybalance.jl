@@ -1,8 +1,10 @@
-using DrWatson
-@quickactivate "DiConv"
-
 using NCDatasets
 using Crayons.Box
+using Statistics
+
+using PyCall
+using LaTeXStrings
+pplt = pyimport("proplot");
 
 function ebextract(experiment::AbstractString, config::AbstractString)
 
