@@ -20,10 +20,10 @@ function prcp2hist(
     else; prcp   = collate(init,sroot,modID="m2D",parID="prcp")
     end
 
-    prcp = prcp[prcp.!=0]; prcp = prcp/24
+    prcp = prcp/24
 
     if avg2D
-          edges = 0.1:0.1:10; w = fit(Histogram,prcp,edges).weights
+          edges = 0:0.1:10; w = fit(Histogram,prcp,edges).weights
     else; edges = 0:0.5:100; w = fit(Histogram,prcp,edges).weights
     end
 
@@ -46,7 +46,7 @@ function csf2hist(
     swp = collate(init,sroot,modID="m2D",parID="swp")
     csf = tcw ./ swp; if avg2D; csf = dropdims(mean(csf,dims=(1,2)),dims=(1,2)) end
 
-    edges = (0:100)/100; w = fit(Histogram,csf[:],edges).weights
+    edges = (0:500)/500; w = fit(Histogram,csf[:],edges).weights
 
     return edges,w,mean(csf)
 
