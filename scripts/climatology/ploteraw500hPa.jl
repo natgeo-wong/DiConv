@@ -32,6 +32,7 @@ c1 = axs[1].contourf(
     cmap="RdBu_r",extend="both"
 );
 axs[1].plot(x,y,c="k",lw=0.2)
+axs[1].plot([120,180,180,120,120],[-15,-15,10,10,-15],c="r",lw=1)
 axs[1].format(xlim=(60,240),ylim=(-20,20))
 axs[1].colorbar(c1,loc="r")
 
@@ -55,13 +56,13 @@ end
 
 pplt.close(); f,axs = pplt.subplots(aspect=0.5,axwidth=2);
 axs[1].plot(wavg,lvl);
-axs[1].format(ylim=(1000,1))
+axs[1].format(ylim=(1000,0))
 mkpath(plotsdir("OBS_CLIMATE"))
 f.savefig(plotsdir("OBS_CLIMATE/erawprofile.png"),transparent=false,dpi=200)
 
 pplt.close(); f,axs = pplt.subplots(aspect=0.5,axwidth=2);
 axs[1].plot(zavg,lvl);
-axs[1].format(ylim=(1000,1))
+axs[1].format(ylim=(1000,0))
 mkpath(plotsdir("OBS_CLIMATE"))
 f.savefig(plotsdir("OBS_CLIMATE/erazprofile.png"),transparent=false,dpi=200)
 
@@ -69,7 +70,7 @@ splzp = Spline1D(lvl*100,zavg); dzdp = derivative(splzp,lvl*100;nu=1)
 wz = wavg .* dzdp
 pplt.close(); f,axs = pplt.subplots(aspect=0.5,axwidth=2);
 axs[1].plot(wz,lvl);
-axs[1].format(ylim=(1000,1))
+axs[1].format(ylim=(1000,0),ylabel="Pressure / hPa",xlabel=L"w / m s$^{-1}$")
 mkpath(plotsdir("OBS_CLIMATE"))
 f.savefig(plotsdir("OBS_CLIMATE/erawprofile2.png"),transparent=false,dpi=200)
 
