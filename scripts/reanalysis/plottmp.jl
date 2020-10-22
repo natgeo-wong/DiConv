@@ -77,14 +77,13 @@ function plottmp(
     axs[2].plot(plbin,lavg_DTP,c="b")
     axs[2].plot(plbin,lavg_IPW,c="r")
     axs[2].plot(plbin,lavg_WPW,c="k")
-    axs[2].plot(plbin,lavg_DRY,c="k",linestyle=":")
-    axs[2].format(xlim=(minimum(lbin),maximum(lbin)),ylabel="Normalized Frequency")
+    axs[2].format(xlim=(minimum(lbin),maximum(lbin)),rtitle="Land",ylabel="Normalized Frequency")
 
     axs[3].plot(psbin,savg_DTP,c="b")
     axs[3].plot(psbin,savg_IPW,c="r")
     axs[3].plot(psbin,savg_WPW,c="k")
     axs[3].plot(psbin,savg_DRY,c="k",linestyle=":")
-    axs[3].format(xlim=(minimum(sbin),maximum(sbin)))
+    axs[3].format(xlim=(minimum(sbin),maximum(sbin)),rtitle="Ocean")
 
     for ax in axs
         ax.format(abc=true,grid="on")

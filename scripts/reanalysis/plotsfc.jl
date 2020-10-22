@@ -68,14 +68,13 @@ function plotsfc(
     axs[2].plot(pbin,lavg_DTP,c="b")
     axs[2].plot(pbin,lavg_IPW,c="r")
     axs[2].plot(pbin,lavg_WPW,c="k")
-    axs[2].plot(pbin,lavg_DRY,c="k",linestyle=":")
-    axs[2].format(xlim=(0,maximum(bins)),ylabel="Normalized Frequency")
+    axs[2].format(xlim=(0,maximum(bins)),rtitle="Land",ylabel="Normalized Frequency")
 
     axs[3].plot(pbin,savg_DTP,c="b")
     axs[3].plot(pbin,savg_IPW,c="r")
     axs[3].plot(pbin,savg_WPW,c="k")
     axs[3].plot(pbin,savg_DRY,c="k",linestyle=":")
-    axs[3].format(xlim=(0,maximum(bins)))
+    axs[3].format(xlim=(0,maximum(bins)),rtitle="Ocean")
 
     for ax in axs
         ax.format(abc=true,grid="on")

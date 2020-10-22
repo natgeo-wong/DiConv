@@ -76,13 +76,13 @@ axs[2].plot(10 .^pbin,lavg_DTP,c="b")
 axs[2].plot(10 .^pbin,lavg_IPW,c="r")
 axs[2].plot(10 .^pbin,lavg_WPW,c="k")
 axs[2].plot(10 .^pbin,lavg_DRY,c="k",linestyle=":")
-axs[2].format(xscale="log",ylim=(0,20),ylabel="Normalized Frequency")
+axs[2].format(xscale="log",ylim=(0,20),rtitle="Land",ylabel="Normalized Frequency")
 
 axs[3].plot(10 .^pbin,savg_DTP,c="b")
 axs[3].plot(10 .^pbin,savg_IPW,c="r")
 axs[3].plot(10 .^pbin,savg_WPW,c="k")
 axs[3].plot(10 .^pbin,savg_DRY,c="k",linestyle=":")
-axs[3].format(xscale="log",ylim=(0,20))
+axs[3].format(xscale="log",ylim=(0,20),rtitle="Ocean")
 
 for ax in axs
     ax.format(abc=true,grid="on")
