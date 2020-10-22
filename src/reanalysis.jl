@@ -145,8 +145,10 @@ function bindatasfc(coords,bins,var,lon,lat,lsm)
     ravg = regionextractgrid(var,rinfo)
     rlsm = regionextractgrid(lsm,rinfo)
 
-    lavg = ravg[rlsm.>0.5]; lavg = fit(Histogram,lavg,bins).weights
-    savg = ravg[rlsm.<0.5]; savg = fit(Histogram,savg,bins).weights
+    lavg = ravg[rlsm.>0.5]; lavg = lavg[.!ismissing.(lavg)]; lavg = lavg[.!isnan.(lavg)]
+    savg = ravg[rlsm.<0.5]; savg = savg[.!ismissing.(savg)]; savg = savg[.!isnan.(savg)]
+    lavg = fit(Histogram,lavg,bins).weights
+    savg = fit(Histogram,savg,bins).weights
     lavg = lavg ./ sum(lavg) * (length(bins) - 1)
     savg = savg ./ sum(savg) * (length(bins) - 1)
 
