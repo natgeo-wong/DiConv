@@ -57,7 +57,7 @@ IPW = prect(15,-15,90,180)
 DRY = prect(5,-5,180,275)
 
 pplt.close(); arr = [[1,1],[2,3],[2,3]];
-f,axs = pplt.subplots(arr,aspect=6,axwidth=6,sharey=0);
+f,axs = pplt.subplots(arr,aspect=6,axwidth=6);
 
 c1 = axs[1].contourf(elon,elat,eavg',levels=0:0.05:0.5,cmap="Blues",extend="max");
 axs[1].plot(x,y,c="k",lw=0.2)
@@ -70,19 +70,19 @@ axs[1].format(
     xlim=(0,360),xlocator=[0:60:360],
     suptitle=L"Precipitation Rate / mm hr$^{-1}$"
 )
-axs[1].colorbar(c1,loc="r")
+f.colorbar(c1,loc="r")
 
 axs[2].plot(10 .^pbin,lavg_DTP,c="b")
 axs[2].plot(10 .^pbin,lavg_IPW,c="r")
 axs[2].plot(10 .^pbin,lavg_WPW,c="k")
 axs[2].plot(10 .^pbin,lavg_DRY,c="k",linestyle=":")
-axs[2].format(xscale="log")
+axs[2].format(xscale="log",ylim=(0,20),ylabel="Normalized Frequency")
 
 axs[3].plot(10 .^pbin,savg_DTP,c="b")
 axs[3].plot(10 .^pbin,savg_IPW,c="r")
 axs[3].plot(10 .^pbin,savg_WPW,c="k")
 axs[3].plot(10 .^pbin,savg_DRY,c="k",linestyle=":")
-axs[3].format(xscale="log")
+axs[3].format(xscale="log",ylim=(0,20))
 
 for ax in axs
     ax.format(abc=true,grid="on")
