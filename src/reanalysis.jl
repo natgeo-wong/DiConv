@@ -1,5 +1,6 @@
 using NCDatasets
 using Statistics
+using StatsBase
 
 prect(N::Real,S::Real,W::Real,E::Real) = [W,E,E,W,W],[S,S,N,N,S]
 
@@ -79,16 +80,16 @@ function compilesfceb()
     close(tds)
 
     tds = NCDataset(datadir("reanalysis/era5-TRPx0.25-ssr-sfc.nc"))
-    ssr = dropdims(mean(tds["ssr"][:]*1,dims=3),dims=3)
+    ssr = tds["ssr"][:]*1
     close(tds)
     tds = NCDataset(datadir("reanalysis/era5-TRPx0.25-str-sfc.nc"))
-    str = dropdims(mean(tds["str"][:]*1,dims=3),dims=3)
+    str = tds["str"][:]*1
     close(tds)
     tds = NCDataset(datadir("reanalysis/era5-TRPx0.25-sshf-sfc.nc"))
-    shf = dropdims(mean(tds["sshf"][:]*1,dims=3),dims=3)
+    shf = tds["sshf"][:]*1
     close(tds)
     tds = NCDataset(datadir("reanalysis/era5-TRPx0.25-slhf-sfc.nc"))
-    lhf = dropdims(mean(tds["slhf"][:]*1,dims=3),dims=3)
+    lhf = tds["slhf"][:]*1
     close(tds)
 
     seb = ssr .+ str .+ shf .+ lhf
@@ -144,8 +145,8 @@ function bindatasfc(coords,bins,var,lon,lat,lsm)
     ravg = regionextractgrid(var,rinfo)
     rlsm = regionextractgrid(lsm,rinfo)
 
-    lavg = ravg[rlsm.>0.5]; lavg = fit(Histogram,bins).weights
-    savg = ravg[rlsm.<0.5]; savg = fit(Histogram,bins).weights
+    lavg = ravg[rlsm.>0.5]; lavg = fit(Histogram,lavg,bins).weights
+    savg = ravg[rlsm.<0.5]; savg = fit(Histogram,savg,bins).weights
     lavg = lavg ./ sum(lavg) * (length(bins) - 1)
     savg = savg ./ sum(savg) * (length(bins) - 1)
 

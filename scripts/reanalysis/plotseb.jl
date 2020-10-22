@@ -1,5 +1,6 @@
 using DrWatson
 @quickactivate "DiConv"
+using DelimitedFiles
 using GeoRegions
 using NCDatasets
 using StatsBase
@@ -35,10 +36,10 @@ function plotfluxes(
 
     pbin = (bins[2:end].+bins[1:(end-1)])/2
 
-    lavg_DTP,savg_DTP = bindata([20,-20,270,60],bins,var,lon,lat,lsm)
-    lavg_IPW,savg_IPW = bindata([15,-15,180,90],bins,var,lon,lat,lsm)
-    lavg_WPW,savg_WPW = bindata([10,-10,180,120],bins,var,lon,lat,lsm)
-    lavg_DRY,savg_DRY = bindata([5,-5,275,180],bins,var,lon,lat,lsm)
+    lavg_DTP,savg_DTP = bindatasfc([20,-20,270,60],bins,var,lon,lat,lsm)
+    lavg_IPW,savg_IPW = bindatasfc([15,-15,180,90],bins,var,lon,lat,lsm)
+    lavg_WPW,savg_WPW = bindatasfc([10,-10,180,120],bins,var,lon,lat,lsm)
+    lavg_DRY,savg_DRY = bindatasfc([5,-5,275,180],bins,var,lon,lat,lsm)
 
     coord = readdlm(srcdir("GLB-i.txt"),comments=true,comment_char='#')
     x = coord[:,1]; y = coord[:,2];
@@ -67,8 +68,8 @@ function plotfluxes(
     axs[2].plot(pbin,lavg_DTP,c="b")
     axs[2].plot(pbin,lavg_IPW,c="r")
     axs[2].plot(pbin,lavg_WPW,c="k")
-    axs[2].plot(pbin,lavg_DRY,c="k",linestyle=":",ylabel="Normalized Frequency")
-    axs[2].format(xlim=(minimum(bins),maximum(bins)))
+    axs[2].plot(pbin,lavg_DRY,c="k",linestyle=":")
+    axs[2].format(xlim=(minimum(bins),maximum(bins)),ylabel="Normalized Frequency")
 
     axs[3].plot(pbin,savg_DTP,c="b")
     axs[3].plot(pbin,savg_IPW,c="r")
