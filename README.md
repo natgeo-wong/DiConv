@@ -1,11 +1,9 @@
 # **<div align="center">DiConv</div>**
 
-This repository contains the analysis scripts and output for the **DiConv** project, which aims to investigate how the diurnal cycle of convection interacts with moisture and rainfall.
+This repository contains the analysis scripts and output for the **DiConv** project, written in Julia.  This is a project repository containing initial test runs that led to a spinoff project in [TropicalRCE](https://github.com/natgeo-wong/TropicalRCE).  DiConv itself has evolved into a separate project [DACA](https://github.com/natgeo-wong/DACA), and therefore this repository will no longer be actively maintained after a undetermined period of time.
 
 **Created/Mantained By:** Nathanael Wong (nathanaelwong@fas.harvard.edu)\
 **Other Collaborators:** Zhiming Kuang (kuang@fas.harvard.edu)
-
-> Introductory Text Here.
 
 ## Current Status
 
@@ -13,30 +11,26 @@ This repository contains the analysis scripts and output for the **DiConv** proj
 * [x] Build SAM model and run basic test cases
 * [x] Write scripts (maybe a package?) to analyse test output and expand to other variables
 * [x] Apply Weak Temperature Gradient (WTG) and/or damp Gravity Waves to SAM
-* [ ] Run simulations w/ moisture flux at various levels
 
-**Experiments**
-* [x] **Control (CON):** No diurnal cycle of heating, take yearly mean
-* [x] **Diurnal (DIF):** Impose a diurnal cycle of heating on the domain
-	* [x] Vary strength of diurnal cycle --> done by changing slab depth of dynamic ocean
-* [ ] **Moisture (MOIST):** Impose a source/flux of moisture into the domain
-	* [ ] Vary strength of moisture source and level of input
+## Installation
 
-## Project Setup
+	To (locally) reproduce this project, do the following:
 
-In order to obtain the relevant data, please follow the instructions listed below:
+	0. Download this code base. Notice that raw data are typically not included in the
+	   git-history and may need to be downloaded independently.
+	1. Open a Julia console and do:
+	   ```
+	   julia> ] activate .
+	    Activating environment at `~/Projects/DiConv/Project.toml`
 
-### 1) Required Julia Dependencies
+	   (DiConv) pkg> instantiate
+	   (DiConv) pkg> add GeoRegions#master SAMTools#master
+	   ```
 
-The entire codebase of this project (except for the SAM model) is written in Julia.  If the data files are downloaded, you should be able to produce my results in their entirety.  The following are the most important Julia packages that were used in this project:
-* NetCDF Data Handling: `NCDatasets.jl`
+	This will install all necessary packages for you to be able to run the scripts and
+	everything should work out of the box.
 
-In order to reproduce the results, first you have to clone the repository, and instantiate the project environment in the Julia REPL in order to install the required packages:
-```
-git clone https://github.com/natgeo-wong/DiConv.git
-] activate .
-instantiate
-```
+	*(Note: You need to install the #master versions of GeoRegions.jl and SAMTools.jl as of now.)*
 
 ## **Other Acknowledgements**
 > Project Repository Template generated using [DrWatson.jl](https://github.com/JuliaDynamics/DrWatson.jl) created by George Datseris.\
